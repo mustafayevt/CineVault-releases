@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CineVault</title>
-<meta name="description" content="CineVault is a fast desktop movie and TV library manager for Windows. Scan your folders, Scrape titles from TMDB, write Kodi, Jellyfin and Emby NFO files and artwork, and Rename folders with Undo.">
+<meta name="description" content="CineVault is a fast desktop movie and TV library manager for Windows. Scan your folders, Scrape titles from TMDB with ratings from almost every site, choose any artwork, write Kodi, Jellyfin and Emby NFO files, Rename with Undo, and fetch subtitles and trailers.">
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#121214" media="(prefers-color-scheme: dark)">
 <meta name="theme-color" content="#f2f1ee" media="(prefers-color-scheme: light)">
@@ -15,7 +15,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="CineVault">
 <meta property="og:title" content="CineVault: every title in its place">
-<meta property="og:description" content="A fast desktop movie and TV library manager for Windows. Scan, Scrape, Rename.">
+<meta property="og:description" content="A fast desktop movie and TV library manager for Windows. Scan, Scrape, Rename, with ratings from almost every site, artwork you choose, NFO files for your media centre, subtitles, trailers and optional torrent search.">
 <meta property="og:url" content="https://mustafayevt.github.io/CineVault-releases/">
 <meta property="og:image" content="https://mustafayevt.github.io/CineVault-releases/img/og.png">
 <meta property="og:image:width" content="1280">
@@ -39,6 +39,7 @@
     </a>
     <nav class="bar-nav" aria-label="Page">
       <a href="#features">Features</a>
+      <a href="#everything">Everything</a>
       <a href="#start">Get started</a>
       <a href="https://github.com/mustafayevt/CineVault-releases/releases">Releases</a>
     </nav>
@@ -51,7 +52,7 @@
       <div class="hero-head">
         <h1><span>Every title</span> <span>in its place.</span></h1>
         <div class="hero-side">
-          <p class="lede">A fast desktop movie and TV library manager. CineVault reads your folders, fills in the details from TMDB and tidies every file name, with an Undo for each change.</p>
+          <p class="lede">A fast desktop movie and TV library manager. CineVault reads your folders, fills in details, ratings and artwork, writes NFO files for your media centre and tidies every file name with an Undo, then handles subtitles, trailers and much more.</p>
           <div class="cta">
             <a class="btn" id="download" data-dl href="https://github.com/mustafayevt/CineVault-releases/releases/latest/download/CineVault-setup-x64.exe">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.75v11.5M7.25 10.5 12 15.25l4.75-4.75M4.75 19.25h14.5"/></svg>
@@ -107,8 +108,9 @@
         <h2 id="f-scrape">The whole film on one page</h2>
         <p>Plot, cast and crew, every rating side by side, the video and audio formats from the file itself, and the artwork in each slot. Change anything by hand and it is written back to the NFO.</p>
         <ul class="facts">
-          <li>Ratings from TMDB, IMDb, Rotten Tomatoes, Metacritic, Trakt and Letterboxd</li>
-          <li>Kodi, Jellyfin and Emby NFO files, posters, fanart and logos</li>
+          <li>Resolution, HDR and Dolby Vision, audio formats and the picture shape, read from the file</li>
+          <li>Edit any field and lock it, so the next Scrape leaves it alone</li>
+          <li>Kodi, Jellyfin, Emby and MediaPortal NFO files</li>
           <li>Trailers found on TMDB and downloaded next to the movie</li>
         </ul>
       </div>
@@ -116,6 +118,46 @@
         <picture>
           <source srcset="img/detail-light.webp" media="(prefers-color-scheme: light)">
           <img src="img/detail-dark.webp" width="1440" height="900" loading="lazy" alt="The movie page for Dune: Part Two with its poster, six ratings, Play, Rescrape and Trailer buttons, the plot, credits and the technical details of the file">
+        </picture>
+      </figure>
+    </div>
+  </section>
+
+  <section class="feature feature-stack" aria-labelledby="f-ratings">
+    <div class="wrap feature-in">
+      <div class="feature-copy">
+        <h2 id="f-ratings">Almost every rating, one click from its source</h2>
+        <p>Every Scrape brings the TMDB rating. Add your own free OMDb or MDBList key and CineVault also shows IMDb, Rotten Tomatoes critics and audience, Metacritic critics and users, Trakt, Letterboxd, Roger Ebert and more, side by side.</p>
+        <ul class="facts">
+          <li>Click a rating to open the movie's page on that site</li>
+          <li>Fetch missing ratings fills in the titles you scraped before you added a key</li>
+          <li>Sort and filter the library by any source, and see the IMDb Top 250 rank</li>
+        </ul>
+      </div>
+      <figure class="shot shot-crop">
+        <picture>
+          <source srcset="img/ratings-light.webp" media="(prefers-color-scheme: light)">
+          <img src="img/ratings-dark.webp" width="900" height="230" loading="lazy" alt="The rating strip of a movie page: TMDB, IMDb, Trakt, Letterboxd, Rotten Tomatoes critics and audience, Metacritic critics and users, Roger Ebert and more, each with its logo">
+        </picture>
+      </figure>
+    </div>
+  </section>
+
+  <section class="feature" aria-labelledby="f-artwork">
+    <div class="wrap feature-in">
+      <div class="feature-copy">
+        <h2 id="f-artwork">Your artwork, your choice</h2>
+        <p>Choose any poster, fanart, logo, banner, clear art, disc art, keyart or thumb from TMDB, fanart.tv and other sources, or a frame from the video itself. Each one comes with a preview, its size and its language.</p>
+        <ul class="facts">
+          <li>Your pick is written next to the movie and kept on every later Scrape</li>
+          <li>Drop an image on a slot, or paste an address or a file path</li>
+          <li>Changed your mind? Undo puts the old image back</li>
+        </ul>
+      </div>
+      <figure class="shot shot-crop">
+        <picture>
+          <source srcset="img/artwork-light.webp" media="(prefers-color-scheme: light)">
+          <img src="img/artwork-dark.webp" width="1170" height="500" loading="lazy" alt="The Artwork tab of a movie: poster, fanart, logo, thumb and keyart slots filled, and empty banner, clear art and disc art slots ready to add">
         </picture>
       </figure>
     </div>
@@ -152,7 +194,30 @@
     </div>
   </section>
 
-  <section class="feature feature-flip feature-tall" aria-labelledby="f-companion">
+  <section class="feature feature-flip" aria-labelledby="f-torrents">
+    <div class="wrap feature-in">
+      <div class="feature-copy">
+        <p class="eyebrow">Optional</p>
+        <h2 id="f-torrents">Find a better copy</h2>
+        <p>Torrent search looks up a movie or a show on public torrent sites from inside CineVault. It is built in, with nothing to set up: six sources answer at once, and a managed indexer service reaches more sites. It downloads itself and runs only while CineVault does.</p>
+        <ul class="facts">
+          <li>Results grouped by quality, with seeders, size and source</li>
+          <li>Better than your copy marks the releases that beat the one you own</li>
+          <li>One click opens a release in your torrent app; or copy the magnet link, or open its page on the site</li>
+          <li>Search a whole show, one season or one episode</li>
+        </ul>
+        <p class="note">Off by default: switch it on in Settings&nbsp;›&nbsp;Features. You are responsible for what you download and share.</p>
+      </div>
+      <figure class="shot">
+        <picture>
+          <source srcset="img/torrents-light.webp" media="(prefers-color-scheme: light)">
+          <img src="img/torrents-dark.webp" width="1440" height="900" loading="lazy" alt="Torrent search for Blade Runner 2049: the copy in the library is 1080p, and the releases are grouped into 2160p and 1080p with seeders, size, sources and Open in torrent app buttons, the 2160p ones marked Better than your copy">
+        </picture>
+      </figure>
+    </div>
+  </section>
+
+  <section class="feature feature-tall" aria-labelledby="f-companion">
     <div class="wrap feature-in">
       <div class="feature-copy">
         <h2 id="f-companion">Keep it open on a second monitor</h2>
@@ -166,6 +231,102 @@
           <img src="img/companion-dark.webp" width="560" height="960" loading="lazy" alt="CineVault in a narrow window: the Dune: Part Two page in one column with the sidebar hidden behind a menu button">
         </picture>
       </figure>
+    </div>
+  </section>
+
+  <section class="everything" id="everything" aria-labelledby="all-title">
+    <div class="wrap">
+      <h2 id="all-title" class="section-title">Everything CineVault does</h2>
+      <p class="section-lede">The whole list, in one place. Items marked Optional are off by default; switch them on in Settings&nbsp;›&nbsp;Features when you want them.</p>
+      <div class="all-grid">
+        <div class="all-group">
+          <h3>Library</h3>
+          <ul>
+            <li>Movies, and TV shows with seasons and episodes</li>
+            <li>Collections, with the movies you are missing</li>
+            <li>Missing and unaired episodes of each show</li>
+            <li>Tags, saved views and filter chips</li>
+            <li>Needs review for the matches it isn't sure of</li>
+            <li>Missing and duplicate titles in one list</li>
+            <li>New files picked up when a folder changes</li>
+            <li>Move a library folder and its titles follow</li>
+          </ul>
+        </div>
+        <div class="all-group">
+          <h3>Details and ratings</h3>
+          <ul>
+            <li>Scrape from TMDB, with TheTVDB, AniDB and more</li>
+            <li>The best match is chosen for you</li>
+            <li>Edit every field, and lock it against the next Scrape</li>
+            <li>Edit many titles at once</li>
+            <li>Ratings from almost every site, each a link to its page</li>
+            <li>Your own rating, watched state and play count</li>
+            <li>IMDb Top 250 rank</li>
+          </ul>
+        </div>
+        <div class="all-group">
+          <h3>Artwork</h3>
+          <ul>
+            <li>Posters, fanart, logos, banners, clear art, disc art and more</li>
+            <li>A picker with previews from TMDB, fanart.tv and others</li>
+            <li>Frames grabbed from the video</li>
+            <li>Season posters for TV shows</li>
+            <li>Your choice is kept on later scrapes, with Undo</li>
+          </ul>
+        </div>
+        <div class="all-group">
+          <h3>Files and naming</h3>
+          <ul>
+            <li>NFO files in the Kodi, Jellyfin, Emby and MediaPortal formats</li>
+            <li>Rename from a preset or your own template</li>
+            <li>Keeps your sub-folders</li>
+            <li>A preview first, a trash folder for leftovers, Undo for every batch</li>
+            <li>Resolution, HDR, Dolby Vision, audio formats and 3D from the file</li>
+            <li>Aspect ratio detection and CRC-32 checksums</li>
+          </ul>
+        </div>
+        <div class="all-group">
+          <h3>Subtitles and trailers</h3>
+          <ul>
+            <li>Subtitle search and download from OpenSubtitles and SubDL</li>
+            <li>Subtitle tracks inside MKV files saved as SRT</li>
+            <li>Trailers found on TMDB and downloaded with the movie</li>
+            <li>Theme music for TV shows</li>
+            <li>Play in your own media player</li>
+          </ul>
+        </div>
+        <div class="all-group">
+          <h3>Media centres</h3>
+          <ul>
+            <li>Kodi library scan, clean and refresh <span class="opt">Optional</span></li>
+            <li>Share your library with UPnP and DLNA players <span class="opt">Optional</span></li>
+            <li>Wake-on-LAN for your media box <span class="opt">Optional</span></li>
+            <li>Trakt and Simkl sync of watched state, collection and ratings <span class="opt">Optional</span></li>
+          </ul>
+        </div>
+        <div class="all-group">
+          <h3>Find releases</h3>
+          <ul>
+            <li>Torrent search on six public sources and a managed indexer <span class="opt">Optional</span></li>
+            <li>Releases grouped by quality, Better than your copy <span class="opt">Optional</span></li>
+            <li>Your own Torznab indexer, if you have one <span class="opt">Optional</span></li>
+          </ul>
+        </div>
+        <div class="all-group">
+          <h3>App</h3>
+          <ul>
+            <li>Command palette and keyboard shortcuts you can change</li>
+            <li>A companion view for a second monitor</li>
+            <li>Dark and light themes</li>
+            <li>Automatic updates, signed with the project key</li>
+            <li>Portable mode from a zip, nothing written outside its folder</li>
+            <li>Export to web pages, CSV, JSON and playlists <span class="opt">Optional</span></li>
+            <li>An HTTP API and automation for your own scripts <span class="opt">Optional</span></li>
+            <li>Post-processing scripts after a Scrape <span class="opt">Optional</span></li>
+            <li>Daily backups you can restore <span class="opt">Optional</span></li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 

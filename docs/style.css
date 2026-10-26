@@ -430,6 +430,7 @@ kbd {
 
 .stages,
 .feature,
+.everything,
 .start,
 .reqs {
   border-top: 1px solid var(--line);
@@ -540,6 +541,36 @@ kbd {
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
 
+.feature-stack .feature-in {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px;
+}
+
+.feature-stack .feature-copy {
+  grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+  gap: 18px clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+
+.feature-stack .feature-copy h2 {
+  grid-column: 1 / -1;
+}
+
+.feature-stack .facts {
+  margin: 0;
+}
+
+.feature-stack .shot {
+  width: 100%;
+  max-width: 900px;
+}
+
+@media (max-width: 860px) {
+  .feature-stack .feature-copy {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 .feature-copy {
   display: grid;
   gap: 18px;
@@ -608,6 +639,92 @@ kbd {
   }
   .feature-flip .feature-copy {
     order: 0;
+  }
+}
+
+.eyebrow {
+  justify-self: start;
+  padding: 2px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--accent-text);
+}
+
+.feature .note {
+  padding: 12px 14px;
+  border-left: 2px solid var(--accent);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--accent-soft);
+  color: var(--text);
+  font-size: 15px;
+}
+
+/* Everything CineVault does ------------------------------------------------------------------ */
+
+.all-grid {
+  margin-top: 48px;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 40px 32px;
+}
+
+.all-group {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.all-group h3 {
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  font-stretch: 108%;
+}
+
+.all-group ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.all-group li {
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.opt {
+  display: inline-block;
+  margin-left: 4px;
+  padding: 0 6px;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  vertical-align: 1px;
+  white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+  .all-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .all-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
   }
 }
 
