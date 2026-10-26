@@ -106,3 +106,80 @@
       if (mac) showMac(null, "");
     });
 })();
+
+// The rename strip cycles through the naming styles until someone picks one; reduced motion keeps
+// it still on Clean, and the buttons always work.
+(function () {
+  "use strict";
+  var STYLES = {
+    clean: { out: "Dune - Part Two (2024)", template: "{Title} ({Year})", keeps: false },
+    detailed: {
+      out: "Dune - Part Two (2024) [2160p] [Web-DL] [Dolby Vision, HDR10] [TrueHD Atmos 7.1]",
+      template: "{Title} ({Year}) [{Resolution}] [{Source}] [{HDR}] [{Audio}]",
+      keeps: true,
+    },
+    server: {
+      out: "Dune - Part Two (2024) {tmdb-693134}",
+      template: "{Title} ({Year}) {tmdb-{TMDB id}}",
+      keeps: false,
+    },
+    custom: {
+      out: "D/Dune - Part Two (2024) - 2160p",
+      template: "{First letter}/{Title} ({Year}) - {Resolution}",
+      keeps: false,
+    },
+  };
+  var ORDER = ["clean", "detailed", "server", "custom"];
+  var strip = document.querySelector(".strip");
+  var out = document.querySelector("[data-style-out]");
+  var template = document.querySelector("[data-style-template]");
+  var buttons = Array.prototype.slice.call(document.querySelectorAll(".style-pick"));
+  if (!strip || !out || !template || buttons.length === 0) return;
+
+  var current = "clean";
+  var timer = null;
+  var touched = false;
+
+  function show(name) {
+    var style = STYLES[name];
+    if (!style || name === current) return;
+    current = name;
+    buttons.forEach(function (button) {
+      button.setAttribute("aria-pressed", String(button.getAttribute("data-style") === name));
+    });
+    if (style.keeps) strip.setAttribute("data-keeps-tags", "");
+    else strip.removeAttribute("data-keeps-tags");
+    out.classList.add("is-swapping");
+    window.setTimeout(function () {
+      out.textContent = style.out;
+      template.textContent = style.template;
+      out.classList.remove("is-swapping");
+    }, 220);
+  }
+
+  function stop() {
+    touched = true;
+    if (timer !== null) window.clearInterval(timer);
+    timer = null;
+  }
+
+  buttons.forEach(function (button) {
+    button.addEventListener("click", function () {
+      stop();
+      show(button.getAttribute("data-style"));
+    });
+  });
+
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!still) {
+    // Start after the first strike-and-reveal has played.
+    window.setTimeout(function () {
+      if (touched) return;
+      timer = window.setInterval(function () {
+        show(ORDER[(ORDER.indexOf(current) + 1) % ORDER.length]);
+      }, 3200);
+    }, 2600);
+    strip.addEventListener("mouseenter", stop);
+    strip.addEventListener("focusin", stop);
+  }
+})();

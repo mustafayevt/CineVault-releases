@@ -327,6 +327,74 @@ kbd {
   animation: reveal 700ms var(--ease) 1150ms both;
 }
 
+.strip-to code {
+  transition: opacity 220ms var(--ease);
+}
+.strip-to code.is-swapping {
+  opacity: 0;
+}
+
+/* When the chosen style keeps the tags, the "before" line is shown plain: nothing is struck. */
+.strip[data-keeps-tags] .strip-from s {
+  color: var(--text-2);
+  background: transparent;
+  text-decoration-color: transparent;
+  transition: color 220ms var(--ease), background-color 220ms var(--ease),
+    text-decoration-color 220ms var(--ease);
+}
+
+.strip-styles {
+  align-items: center;
+  margin-top: 4px;
+}
+.style-picks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-width: 0;
+}
+.style-pick {
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
+  padding: 7px 11px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 160ms var(--ease), background-color 160ms var(--ease),
+    border-color 160ms var(--ease);
+}
+.style-pick:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+.style-pick[aria-pressed="true"] {
+  color: var(--accent-text);
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.style-pick:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+.strip-note {
+  margin: 2px 0 0 64px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.strip-note code {
+  font-size: 13px;
+  color: var(--text-2);
+  overflow-wrap: anywhere;
+}
+@media (max-width: 560px) {
+  .strip-note {
+    margin-left: 0;
+  }
+}
+
 @keyframes strike {
   from {
     color: var(--text-2);
