@@ -1,13 +1,12 @@
-// Points the download buttons at the visitor's system and fills in the current version, installer
-// size and release date from the public releases API. The buttons are written for Windows with the
-// version-less releases/latest/download link, so they work without this script.
+// Fills in the current version, installer size and release date from the public releases API, and
+// tells Mac visitors that their version is still on its way. The buttons are written for Windows
+// with the version-less releases/latest/download link, so they work without this script.
 (function () {
   "use strict";
   var API = "https://api.github.com/repos/mustafayevt/CineVault-releases/releases/latest";
   var DOWNLOAD = "https://github.com/mustafayevt/CineVault-releases/releases/latest/download/";
   var RELEASES = "https://github.com/mustafayevt/CineVault-releases/releases";
   var SETUP = "CineVault-setup-x64.exe";
-  var DMG = "CineVault-universal.dmg";
 
   function megabytes(bytes) {
     return (bytes / (1024 * 1024)).toFixed(1) + " MB";
@@ -31,51 +30,26 @@
     return /Macintosh|Mac OS X/i.test(navigator.userAgent) && navigator.maxTouchPoints < 2;
   }
 
-  // A Mac visitor: the macOS download when a build exists, otherwise an honest "coming soon"
-  // with the Windows installer one click away.
-  function showMac(dmg, version) {
+  // A Mac visitor: an honest "coming soon" with the Windows installer one click away.
+  function showMac() {
     all("[data-dl]").forEach(function (button) {
       var label = button.querySelector("[data-dl-label]");
       var note = button.querySelector("[data-dl-note]");
-      if (dmg) {
-        button.href = DOWNLOAD + DMG;
-        if (label) label.textContent = "Download for macOS";
-        if (note) note.textContent = "Version " + version + ", " + megabytes(dmg.size);
-      } else {
-        button.href = RELEASES;
-        if (label) label.textContent = "macOS version coming soon";
-        if (note) note.textContent = "See the releases page for news";
-      }
+      button.href = RELEASES;
+      if (label) label.textContent = "macOS version coming soon";
+      if (note) note.textContent = "See the releases page for news";
     });
-    setAll(
-      "[data-dl-fine]",
-      dmg
-        ? "macOS 11 or later, Apple silicon and Intel. Free."
-        : "CineVault runs on Windows 10 and 11 today. The macOS version is on its way."
-    );
-    all("[data-dl-alt]").forEach(function (alt) {
-      alt.innerHTML = "";
-      var link = document.createElement("a");
-      link.className = "link";
-      link.href = DOWNLOAD + SETUP;
-      link.textContent = "Download for Windows instead";
-      alt.appendChild(link);
-    });
+    setAll("[data-dl-fine]", "CineVault runs on Windows 10 and 11 today. The macOS version is on its way.");
     all(".cta").forEach(function (cta) {
-      if (cta.querySelector("[data-dl-alt]")) return;
-      var alt = document.createElement("a");
-      alt.className = "link";
-      alt.href = DOWNLOAD + SETUP;
-      alt.textContent = "Windows version";
-      cta.appendChild(alt);
+      var quiet = cta.querySelector(".btn-quiet");
+      if (!quiet) return;
+      quiet.href = DOWNLOAD + SETUP;
+      quiet.textContent = "Download for Windows";
     });
   }
 
-  var mac = isMac();
-  if (!window.fetch) {
-    if (mac) showMac(null, "");
-    return;
-  }
+  if (isMac()) showMac();
+  if (!window.fetch) return;
   fetch(API, { headers: { Accept: "application/vnd.github+json" } })
     .then(function (response) {
       if (!response.ok) throw new Error("HTTP " + response.status);
@@ -84,12 +58,9 @@
     .then(function (release) {
       var version = String(release.tag_name || "").replace(/^v/, "");
       if (/^\d+\.\d+\.\d+$/.test(version)) setAll("[data-version]", version);
-      var assets = release.assets || [];
-      var dmg = null;
-      for (var i = 0; i < assets.length; i++) {
-        if (assets[i].name === SETUP && assets[i].size > 0) setAll("[data-size]", megabytes(assets[i].size));
-        if (assets[i].name === DMG && assets[i].size > 0) dmg = assets[i];
-      }
+      (release.assets || []).forEach(function (asset) {
+        if (asset.name === SETUP && asset.size > 0) setAll("[data-size]", megabytes(asset.size));
+      });
       var released = document.getElementById("released");
       if (released && release.published_at) {
         var date = new Date(release.published_at);
@@ -99,12 +70,37 @@
             date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
         }
       }
-      if (mac) showMac(dmg, version);
     })
     .catch(function () {
       // Keep the version written into the page.
-      if (mac) showMac(null, "");
     });
+})();
+
+// Screenshots and cards rise in as they scroll into view. Reduced motion, or a browser without
+// IntersectionObserver, shows everything at once.
+(function () {
+  "use strict";
+  var items = Array.prototype.slice.call(document.querySelectorAll(".reveal"));
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (still || !("IntersectionObserver" in window)) {
+    items.forEach(function (item) {
+      item.classList.add("is-in");
+    });
+    return;
+  }
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add("is-in");
+        observer.unobserve(entry.target);
+      });
+    },
+    { rootMargin: "0px 0px -8% 0px", threshold: 0.08 }
+  );
+  items.forEach(function (item) {
+    observer.observe(item);
+  });
 })();
 
 // The rename strip cycles through the naming styles until someone picks one; reduced motion keeps
@@ -112,21 +108,15 @@
 (function () {
   "use strict";
   var STYLES = {
-    clean: { out: "Dune - Part Two (2024)", template: "{Title} ({Year})", keeps: false },
+    clean: { out: "Dune - Part Two (2024)", template: "{Title} ({Year})" },
     detailed: {
       out: "Dune - Part Two (2024) [2160p] [Web-DL] [Dolby Vision, HDR10] [TrueHD Atmos 7.1]",
       template: "{Title} ({Year}) [{Resolution}] [{Source}] [{HDR}] [{Audio}]",
-      keeps: true,
     },
-    server: {
-      out: "Dune - Part Two (2024) {tmdb-693134}",
-      template: "{Title} ({Year}) {tmdb-{TMDB id}}",
-      keeps: false,
-    },
+    server: { out: "Dune - Part Two (2024) {tmdb-693134}", template: "{Title} ({Year}) {tmdb-{TMDB id}}" },
     custom: {
       out: "D/Dune - Part Two (2024) - 2160p",
       template: "{First letter}/{Title} ({Year}) - {Resolution}",
-      keeps: false,
     },
   };
   var ORDER = ["clean", "detailed", "server", "custom"];
@@ -147,14 +137,12 @@
     buttons.forEach(function (button) {
       button.setAttribute("aria-pressed", String(button.getAttribute("data-style") === name));
     });
-    if (style.keeps) strip.setAttribute("data-keeps-tags", "");
-    else strip.removeAttribute("data-keeps-tags");
     out.classList.add("is-swapping");
     window.setTimeout(function () {
       out.textContent = style.out;
       template.textContent = style.template;
       out.classList.remove("is-swapping");
-    }, 220);
+    }, 180);
   }
 
   function stop() {
@@ -171,15 +159,16 @@
   });
 
   var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (!still) {
-    // Start after the first strike-and-reveal has played.
-    window.setTimeout(function () {
-      if (touched) return;
-      timer = window.setInterval(function () {
-        show(ORDER[(ORDER.indexOf(current) + 1) % ORDER.length]);
-      }, 3200);
-    }, 2600);
-    strip.addEventListener("mouseenter", stop);
-    strip.addEventListener("focusin", stop);
-  }
+  if (still || !("IntersectionObserver" in window)) return;
+  // Start cycling only once the strip is on screen.
+  var seen = new IntersectionObserver(function (entries) {
+    if (!entries[0].isIntersecting || touched || timer !== null) return;
+    timer = window.setInterval(function () {
+      show(ORDER[(ORDER.indexOf(current) + 1) % ORDER.length]);
+    }, 3000);
+    seen.disconnect();
+  });
+  seen.observe(strip);
+  strip.addEventListener("mouseenter", stop);
+  strip.addEventListener("focusin", stop);
 })();
